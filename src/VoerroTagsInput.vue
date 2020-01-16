@@ -178,6 +178,11 @@ export default {
             default: true
         },
 
+        reverseSearchResults: {
+          type: Boolean,
+          default: false
+        },
+
         caseSensitiveTags: {
             type: Boolean,
             default: false
@@ -485,6 +490,10 @@ export default {
                             this.typeaheadMaxResults
                         );
                     }
+
+                    if (this.reverseSearchResults) {
+                      this.searchResults.reverse();
+                    }
                 }
 
                 this.oldInput = this.input;
@@ -510,9 +519,16 @@ export default {
          * @returns void
          */
         nextSearchResult() {
+          if (!this.reverseSearchResults) {
             if (this.searchSelection + 1 <= this.searchResults.length - 1) {
                 this.searchSelection++;
             }
+          }
+          else {
+            if (this.searchSelection > 0) {
+                this.searchSelection--;
+            }
+          }
         },
 
         /**
@@ -521,9 +537,16 @@ export default {
          * @returns void
          */
         prevSearchResult() {
+          if (!this.reverseSearchResults) {
             if (this.searchSelection > 0) {
                 this.searchSelection--;
             }
+          }
+          else {
+            if (this.searchSelection + 1 <= this.searchResults.length - 1) {
+                this.searchSelection++;
+            }
+          }
         },
 
         /**

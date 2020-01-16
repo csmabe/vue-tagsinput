@@ -174,7 +174,7 @@ export default {
         },
 
         sortSearchResults: {
-            type: Boolean,
+            type: [ Boolean, Function ],
             default: true
         },
 
@@ -466,13 +466,16 @@ export default {
                     }
 
                     // Sort the search results alphabetically
-                    if (this.sortSearchResults) {
-                        this.searchResults.sort((a, b) => {
-                            if (a.value < b.value) return -1;
-                            if (a.value > b.value) return 1;
+                    if (typeof this.sortSearchResults == Function) {
+                      this.searchResults.sort(this.sortSearchResults);
+                    }
+                    else if (this.sortSearchResults === true) {
+                      this.searchResults.sort((a, b) => {
+                          if (a.value < b.value) return -1;
+                          if (a.value > b.value) return 1;
 
-                            return 0;
-                        });
+                          return 0;
+                      });
                     }
 
                     // Shorten Search results to desired length
